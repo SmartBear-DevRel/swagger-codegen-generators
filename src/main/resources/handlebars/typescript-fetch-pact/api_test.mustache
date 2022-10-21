@@ -1,0 +1,77 @@
+{{>licenseInfo}}
+
+import * as api from "./api"
+import { Configuration } from "./configuration"
+import { PactV3, MatchersV3 } from "@pact-foundation/pact";
+
+const config: Configuration = {}
+
+const {
+  eachLike,
+  atLeastLike,
+  integer,
+  datetime,
+  boolean,
+  string,
+  regex,
+  like,
+  eachKeyLike,
+} = MatchersV3;
+
+{{#apiInfo}}
+{{#apis}}
+{{#operations}}
+describe("{{classname}}", () => {
+
+  let instance: api.{{classname}}
+  
+  const provider = new PactV3({
+  consumer: "{{classname}}-consumer",
+  provider: "{{classname}}",
+  });
+
+
+{{#operation}}
+{{#contents}}
+{{#@first}}
+  test("{{operationId}}", () => {
+
+    {{#parameters}}
+    {{#isObject}}
+    const {{{paramName}}}: { [key:string]: api.{{{dataType}}} } = {{>api_test_default_value}}
+    {{/isObject}}
+    {{^isObject}}
+    {{#hasInnerObject}}
+    const {{{paramName}}}: Array<api.{{{baseType}}}> = {{>api_test_default_value}}
+    {{/hasInnerObject}}
+    {{^hasInnerObject}}
+    const {{{paramName}}}: {{{dataType}}} = {{>api_test_default_value}}
+    {{/hasInnerObject}}
+    {{/isObject}}
+    {{/parameters}}
+    provider
+      .given("{{operationId}} is available on {{classname}} service")
+      .uponReceiving("A {{httpMethod}} request for {{operationId}}")
+      .withRequest({
+        method: "{{httpMethod}}",
+        path: "{{path}}",
+        {{#consumes}}contentType: "{{mediaType}}",{{/consumes}}
+      })
+      .willRespondWith({
+        status: 200,
+        body: undefined,
+        {{#produces}}contentType: "{{mediaType}}",{{/produces}}
+      });
+    return provider.executeTest(async(mockserver) => {
+      instance = new api.{{classname}}(config,mockserver.url)
+      expect(instance.{{operationId}}({{#parameters}}{{{paramName}}}, {{/parameters}}{})).resolves.toBe(null)
+    });
+  })
+{{/@first}}
+{{/contents}}
+{{/operation}}
+})
+
+{{/operations}}
+{{/apis}}
+{{/apiInfo}}

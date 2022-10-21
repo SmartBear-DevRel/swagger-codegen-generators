@@ -27,7 +27,7 @@ describe("{{classname}}", () => {
     const {{{paramName}}}: Array<api.{{{baseType}}}> = {{>api_test_default_value}}
     {{/hasInnerObject}}
     {{^hasInnerObject}}
-    const {{{paramName}}}: {{{dataType}}} = {{>api_test_default_value}}
+    const {{{paramName}}}: vv{{{dataType}}} = {{>api_test_default_value}}
     {{/hasInnerObject}}
     {{/isObject}}
     {{/parameters}}

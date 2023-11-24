@@ -12,7 +12,7 @@ package:
 	mvn package
 
 generate-typescript-fetch-pact:
-	java -cp swagger-codegen-cli-3.0.34.jar:target/swagger-codegen-generators-1.0.36-SNAPSHOT.jar io.swagger.codegen.v3.Codegen  \
+	java -cp swagger-codegen-cli-3.0.34.jar:target/swagger-codegen-generators-1.0.46-SNAPSHOT.jar io.swagger.codegen.v3.Codegen  \
      -i pact-oas.yaml -l typescript-fetch-pact -c config.json
 
 install-typescript-fetch-pact:

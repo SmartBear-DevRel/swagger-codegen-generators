@@ -55,6 +55,7 @@ describe("DefaultApi", () => {
         method: "POST",
         path: "/products",
         contentType: "application/json",
+        body: body.value,
       })
       .willRespondWith({
         status: 200,
@@ -65,7 +66,9 @@ describe("DefaultApi", () => {
     return provider.executeTest(async(mockserver) => {
       instance = new api.DefaultApi(config,mockserver.url)
       const result = await instance.createProduct( body.value, {})
-      expect(result).toEqual({"id":"1234","type":"food","price":42})
+      expect(result).toEqual(
+        {"id":"1234","type":"food","price":42}
+        )
     });
   })
   test("getAllProducts", () => {
@@ -87,7 +90,9 @@ describe("DefaultApi", () => {
     return provider.executeTest(async(mockserver) => {
       instance = new api.DefaultApi(config,mockserver.url)
       const result = await instance.getAllProducts({})
-      expect(result).toEqual([{"id":"1234","type":"food","price":42}])
+      expect(result).toEqual(
+        [{"id":"1234","type":"food","price":42}]
+                )
     });
   })
   test("getProductByID", () => {
@@ -110,7 +115,9 @@ describe("DefaultApi", () => {
     return provider.executeTest(async(mockserver) => {
       instance = new api.DefaultApi(config,mockserver.url)
       const result = await instance.getProductByID( id, {})
-      expect(result).toEqual({"id":"1234","type":"food","price":42})
+      expect(result).toEqual(
+        {"id":"1234","type":"food","price":42}
+                        )
     });
   })
 })

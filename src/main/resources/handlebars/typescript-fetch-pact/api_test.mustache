@@ -56,6 +56,11 @@ describe("{{classname}}", () => {
         method: "{{httpMethod}}",
         path: {{#parameters}}{{#isObject}}"{{{path}}}"{{/isObject}}{{^isObject}} `{{path}}`.replace(`{ {{paramName}} }`.replace(/\s/g, ''),{{paramName}}){{/isObject}}{{/parameters}}{{^parameters}}"{{{path}}}"{{/parameters}},
         {{#consumes}}contentType: "{{mediaType}}",{{/consumes}}
+        {{#parameters}}
+        {{#isObject}}
+        {{{paramName}}}: {{paramName}}.value,
+        {{/isObject}}
+        {{/parameters}}
       })
       .willRespondWith({
         {{#responses}}{{#dataType}}
@@ -68,7 +73,14 @@ describe("{{classname}}", () => {
     return provider.executeTest(async(mockserver) => {
       instance = new api.{{classname}}(config,mockserver.url)
       const result = await instance.{{operationId}}({{#parameters}} {{#isObject}}{{{paramName}}}.value{{/isObject}}{{#isString}}{{{paramName}}}{{/isString}}, {{/parameters}}{})
-      expect(result).toEqual({{#responses}}{{#dataType}}{{#examples}}{{{example}}}{{/examples}}{{/dataType}}{{/responses}})
+      expect(result).toEqual(
+        {{#responses}}
+        {{#dataType}}
+        {{#examples}}
+        {{{example}}}
+        {{/examples}}
+        {{/dataType}}
+        {{/responses}})
     });
   })
 {{/@first}}

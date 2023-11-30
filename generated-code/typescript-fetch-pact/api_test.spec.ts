@@ -53,7 +53,7 @@ describe("DefaultApi", () => {
       .uponReceiving("A POST request for createProduct")
       .withRequest({
         method: "POST",
-        path: `/products`,
+        path: "/products",
         contentType: "application/json",
       })
       .willRespondWith({
@@ -75,7 +75,7 @@ describe("DefaultApi", () => {
       .uponReceiving("A GET request for getAllProducts")
       .withRequest({
         method: "GET",
-        path: `/products`,
+        path: "/products",
         
       })
       .willRespondWith({
@@ -98,7 +98,7 @@ describe("DefaultApi", () => {
       .uponReceiving("A GET request for getProductByID")
       .withRequest({
         method: "GET",
-        path: `/product/{id}`,
+        path:  `/product/{id}`.replace(`{ id }`.replace(/\s/g, ''),id),
         
       })
       .willRespondWith({

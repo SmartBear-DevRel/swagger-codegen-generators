@@ -54,7 +54,7 @@ describe("{{classname}}", () => {
       .uponReceiving("A {{httpMethod}} request for {{operationId}}")
       .withRequest({
         method: "{{httpMethod}}",
-        path: `{{path}}`,
+        path: {{#parameters}}{{#isObject}}"{{{path}}}"{{/isObject}}{{^isObject}} `{{path}}`.replace(`{ {{paramName}} }`.replace(/\s/g, ''),{{paramName}}){{/isObject}}{{/parameters}}{{^parameters}}"{{{path}}}"{{/parameters}},
         {{#consumes}}contentType: "{{mediaType}}",{{/consumes}}
       })
       .willRespondWith({

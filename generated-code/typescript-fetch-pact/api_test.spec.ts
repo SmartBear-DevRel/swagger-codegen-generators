@@ -53,17 +53,19 @@ describe("DefaultApi", () => {
       .uponReceiving("A POST request for createProduct")
       .withRequest({
         method: "POST",
-        path: "/products",
+        path: `/products`,
         contentType: "application/json",
       })
       .willRespondWith({
         status: 200,
-        body: undefined,
+        body: {"id":"1234","type":"food","price":42},
         contentType: "application/json; charset&#x3D;utf-8",
+
       });
     return provider.executeTest(async(mockserver) => {
       instance = new api.DefaultApi(config,mockserver.url)
-      expect(instance.createProduct(body, {})).resolves.toBe(null)
+      const result = await instance.createProduct( body.value, {})
+      expect(result).toEqual({"id":"1234","type":"food","price":42})
     });
   })
   test("getAllProducts", () => {
@@ -73,17 +75,19 @@ describe("DefaultApi", () => {
       .uponReceiving("A GET request for getAllProducts")
       .withRequest({
         method: "GET",
-        path: "/products",
+        path: `/products`,
         
       })
       .willRespondWith({
         status: 200,
-        body: undefined,
+        body: [{"id":"1234","type":"food","price":42}],
         contentType: "application/json; charset&#x3D;utf-8",
+
       });
     return provider.executeTest(async(mockserver) => {
       instance = new api.DefaultApi(config,mockserver.url)
-      expect(instance.getAllProducts({})).resolves.toBe(null)
+      const result = await instance.getAllProducts({})
+      expect(result).toEqual([{"id":"1234","type":"food","price":42}])
     });
   })
   test("getProductByID", () => {
@@ -94,17 +98,19 @@ describe("DefaultApi", () => {
       .uponReceiving("A GET request for getProductByID")
       .withRequest({
         method: "GET",
-        path: "/product/{id}",
+        path: `/product/{id}`,
         
       })
       .willRespondWith({
         status: 200,
-        body: undefined,
+        body: {"id":"1234","type":"food","price":42},
         contentType: "application/json; charset&#x3D;utf-8",
+
       });
     return provider.executeTest(async(mockserver) => {
       instance = new api.DefaultApi(config,mockserver.url)
-      expect(instance.getProductByID(id, {})).resolves.toBe(null)
+      const result = await instance.getProductByID( id, {})
+      expect(result).toEqual({"id":"1234","type":"food","price":42})
     });
   })
 })

@@ -54,17 +54,21 @@ describe("{{classname}}", () => {
       .uponReceiving("A {{httpMethod}} request for {{operationId}}")
       .withRequest({
         method: "{{httpMethod}}",
-        path: "{{path}}",
+        path: `{{path}}`,
         {{#consumes}}contentType: "{{mediaType}}",{{/consumes}}
       })
       .willRespondWith({
-        status: 200,
-        body: undefined,
+        {{#responses}}{{#dataType}}
+        status: {{code}},
+        body: {{#examples}}{{{example}}}{{/examples}},
         {{#produces}}contentType: "{{mediaType}}",{{/produces}}
+        {{/dataType}}{{/responses}}
+
       });
     return provider.executeTest(async(mockserver) => {
       instance = new api.{{classname}}(config,mockserver.url)
-      expect(instance.{{operationId}}({{#parameters}}{{{paramName}}}, {{/parameters}}{})).resolves.toBe(null)
+      const result = await instance.{{operationId}}({{#parameters}} {{#isObject}}{{{paramName}}}.value{{/isObject}}{{#isString}}{{{paramName}}}{{/isString}}, {{/parameters}}{})
+      expect(result).toEqual({{#responses}}{{#dataType}}{{#examples}}{{{example}}}{{/examples}}{{/dataType}}{{/responses}})
     });
   })
 {{/@first}}

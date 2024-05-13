@@ -6,7 +6,7 @@ version = '{{artifactVersion}}'
 
 buildscript {
     repositories {
-        mavenCentral()
+        jcenter()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.3.+'
@@ -15,7 +15,7 @@ buildscript {
 }
 
 repositories {
-    mavenCentral()
+    jcenter()
 }
 
 
@@ -87,17 +87,14 @@ if(hasProperty('target') && target == 'android') {
 } else {
 
     apply plugin: 'java'
-    apply plugin: 'maven-publish'
+    apply plugin: 'maven'
 
     sourceCompatibility = JavaVersion.VERSION_1_7
     targetCompatibility = JavaVersion.VERSION_1_7
 
-    publishing {
-        publications {
-            maven(MavenPublication) {
-               artifactId = '{{artifactId}}'
-               from components.java
-            }
+    install {
+        repositories.mavenInstaller {
+            pom.artifactId = '{{artifactId}}'
         }
     }
 
@@ -122,18 +119,18 @@ ext {
 }
 
 dependencies {
-    implementation "com.squareup.okhttp:okhttp:$okhttp_version"
-    implementation "com.squareup.retrofit:retrofit:$retrofit_version"
+    compile "com.squareup.okhttp:okhttp:$okhttp_version"
+    compile "com.squareup.retrofit:retrofit:$retrofit_version"
     {{#useOas2}}
-    implementation "io.swagger:swagger-annotations:$swagger_annotations_version"
+    compile "io.swagger:swagger-annotations:$swagger_annotations_version"
     {{/useOas2}}
     {{^useOas2}}
-    implementation "io.swagger.core.v3:swagger-annotations:$swagger_annotations_version"
+    compile "io.swagger.core.v3:swagger-annotations:$swagger_annotations_version"
     {{/useOas2}}
-    implementation ("org.apache.oltu.oauth2:org.apache.oltu.oauth2.client:$oltu_version") {
+    compile ("org.apache.oltu.oauth2:org.apache.oltu.oauth2.client:$oltu_version") {
         exclude group: "org.json", module: "json"
     }
-    implementation "org.json:json:20180130"
-    implementation "joda-time:joda-time:$jodatime_version"
-    testImplementation "junit:junit:$junit_version"
+    compile "org.json:json:20180130"
+    compile "joda-time:joda-time:$jodatime_version"
+    testCompile "junit:junit:$junit_version"
 }

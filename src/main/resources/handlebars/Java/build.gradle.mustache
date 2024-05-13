@@ -6,7 +6,7 @@ version = '{{artifactVersion}}'
 
 buildscript {
     repositories {
-        mavenCentral()
+        jcenter()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.3.+'
@@ -15,7 +15,7 @@ buildscript {
 }
 
 repositories {
-    mavenCentral()
+    jcenter()
 }
 
 
@@ -87,7 +87,7 @@ if(hasProperty('target') && target == 'android') {
 } else {
 
     apply plugin: 'java'
-    apply plugin: 'maven-publish'
+    apply plugin: 'maven'
 
     {{#java8}}
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -98,12 +98,9 @@ if(hasProperty('target') && target == 'android') {
     targetCompatibility = JavaVersion.VERSION_1_7
     {{/java8}}
 
-    publishing {
-        publications {
-            maven(MavenPublication) {
-               artifactId = '{{artifactId}}'
-               from components.java
-            }
+    install {
+        repositories.mavenInstaller {
+            pom.artifactId = '{{artifactId}}'
         }
     }
 
@@ -128,28 +125,28 @@ ext {
 
 dependencies {
     {{#useOas2}}
-    implementation "io.swagger:swagger-annotations:$swagger_annotations_version"
+    compile "io.swagger:swagger-annotations:$swagger_annotations_version"
     {{/useOas2}}
     {{^useOas2}}
-    implementation "io.swagger.core.v3:swagger-annotations:$swagger_annotations_version"
+    compile "io.swagger.core.v3:swagger-annotations:$swagger_annotations_version"
     {{/useOas2}}
-    implementation "com.sun.jersey:jersey-client:$jersey_version"
-    implementation "com.sun.jersey.contribs:jersey-multipart:$jersey_version"
-    implementation "com.fasterxml.jackson.core:jackson-core:$jackson_version"
-    implementation "com.fasterxml.jackson.core:jackson-annotations:$jackson_version"
-    implementation "com.fasterxml.jackson.core:jackson-databind:$jackson_version"
-    implementation "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:$jackson_version"
+    compile "com.sun.jersey:jersey-client:$jersey_version"
+    compile "com.sun.jersey.contribs:jersey-multipart:$jersey_version"
+    compile "com.fasterxml.jackson.core:jackson-core:$jackson_version"
+    compile "com.fasterxml.jackson.core:jackson-annotations:$jackson_version"
+    compile "com.fasterxml.jackson.core:jackson-databind:$jackson_version"
+    compile "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:$jackson_version"
     {{#joda}}
-    implementation "com.fasterxml.jackson.datatype:jackson-datatype-joda:$jackson_version"
+    compile "com.fasterxml.jackson.datatype:jackson-datatype-joda:$jackson_version"
     {{/joda}}
     {{#java8}}
-    implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jackson_version"
+    compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jackson_version"
     {{/java8}}
     {{#threetenbp}}
-    implementation "com.github.joschi.jackson:jackson-datatype-threetenbp:2.6.4"
+    compile "com.github.joschi.jackson:jackson-datatype-threetenbp:2.6.4"
     {{/threetenbp}}
     {{^java8}}
-    implementation "com.brsanthu:migbase64:2.2"
+    compile "com.brsanthu:migbase64:2.2"
     {{/java8}}
-    testImplementation "junit:junit:$junit_version"
+    testCompile "junit:junit:$junit_version"
 }

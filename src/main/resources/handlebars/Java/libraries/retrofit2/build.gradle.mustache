@@ -6,7 +6,7 @@ version = '{{artifactVersion}}'
 
 buildscript {
     repositories {
-        mavenCentral()
+        jcenter()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.3.+'
@@ -15,7 +15,7 @@ buildscript {
 }
 
 repositories {
-    mavenCentral()
+    jcenter()
 }
 
 
@@ -87,7 +87,7 @@ if(hasProperty('target') && target == 'android') {
 } else {
 
     apply plugin: 'java'
-    apply plugin: 'maven-publish'
+    apply plugin: 'maven'
 
     sourceCompatibility = JavaVersion.VERSION_{{^java8}}1_7{{/java8}}{{#java8}}1_8{{/java8}}
     targetCompatibility = JavaVersion.VERSION_{{^java8}}1_7{{/java8}}{{#java8}}1_8{{/java8}}
@@ -139,41 +139,41 @@ ext {
 }
 
 dependencies {
-    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
-    implementation "com.squareup.retrofit2:converter-scalars:$retrofit_version"
-    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    compile "com.squareup.retrofit2:retrofit:$retrofit_version"
+    compile "com.squareup.retrofit2:converter-scalars:$retrofit_version"
+    compile "com.squareup.retrofit2:converter-gson:$retrofit_version"
     {{#useRxJava}}
-    implementation "com.squareup.retrofit2:adapter-rxjava:$retrofit_version"
-    implementation "io.reactivex:rxjava:$rx_java_version"
+    compile "com.squareup.retrofit2:adapter-rxjava:$retrofit_version"
+    compile "io.reactivex:rxjava:$rx_java_version"
     {{/useRxJava}}
     {{#useRxJava2}}
     compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
-    implementation "io.reactivex.rxjava2:rxjava:$rx_java_version"
+    compile "io.reactivex.rxjava2:rxjava:$rx_java_version"
     {{/useRxJava2}}
     {{#useOas2}}
-    implementation "io.swagger:swagger-annotations:$swagger_annotations_version"
+    compile "io.swagger:swagger-annotations:$swagger_annotations_version"
     {{/useOas2}}
     {{^useOas2}}
-    implementation "io.swagger.core.v3:swagger-annotations:$swagger_annotations_version"
+    compile "io.swagger.core.v3:swagger-annotations:$swagger_annotations_version"
     {{/useOas2}}
-    implementation ("org.apache.oltu.oauth2:org.apache.oltu.oauth2.client:$oltu_version") {
+    compile ("org.apache.oltu.oauth2:org.apache.oltu.oauth2.client:$oltu_version") {
         exclude group: "org.json", module: "json"
     }
-    implementation "org.json:json:20180130"
-    implementation "io.gsonfire:gson-fire:$json_fire_version"
+    compile "org.json:json:20180130"
+    compile "io.gsonfire:gson-fire:$json_fire_version"
     {{#joda}}
-    implementation "joda-time:joda-time:$jodatime_version"
+    compile "joda-time:joda-time:$jodatime_version"
     {{/joda}}
     {{#threetenbp}}
-    implementation "org.threeten:threetenbp:$threetenbp_version"
+    compile "org.threeten:threetenbp:$threetenbp_version"
     {{/threetenbp}}
     {{#usePlayWS}}
-    implementation "com.typesafe.play:play-java-ws_2.11:$play_version"
-    implementation "com.squareup.retrofit2:converter-jackson:$retrofit_version"
-    implementation "com.fasterxml.jackson.core:jackson-core:$jackson_version"
-    implementation "com.fasterxml.jackson.core:jackson-annotations:$jackson_version"
-    implementation "com.fasterxml.jackson.datatype:jackson-datatype-{{^java8}}joda{{/java8}}{{#java8}}jsr310{{/java8}}:$jackson_version"
+    compile "com.typesafe.play:play-java-ws_2.11:$play_version"
+    compile "com.squareup.retrofit2:converter-jackson:$retrofit_version"
+    compile "com.fasterxml.jackson.core:jackson-core:$jackson_version"
+    compile "com.fasterxml.jackson.core:jackson-annotations:$jackson_version"
+    compile "com.fasterxml.jackson.datatype:jackson-datatype-{{^java8}}joda{{/java8}}{{#java8}}jsr310{{/java8}}:$jackson_version"
     {{/usePlayWS}}
 
-    testImplementation "junit:junit:$junit_version"
+    testCompile "junit:junit:$junit_version"
 }

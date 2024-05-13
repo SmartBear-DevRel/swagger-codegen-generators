@@ -6,7 +6,7 @@ version = '{{artifactVersion}}'
 
 buildscript {
     repositories {
-        mavenCentral()
+        jcenter()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.3.+'
@@ -82,17 +82,14 @@ if(hasProperty('target') && target == 'android') {
 } else {
 
     apply plugin: 'java'
-    apply plugin: 'maven-publish'
+    apply plugin: 'maven'
 
     sourceCompatibility = JavaVersion.VERSION_{{^java8}}1_7{{/java8}}{{#java8}}1_8{{/java8}}
     targetCompatibility = JavaVersion.VERSION_{{^java8}}1_7{{/java8}}{{#java8}}1_8{{/java8}}
 
-    publishing {
-        publications {
-            maven(MavenPublication) {
-               artifactId = '{{artifactId}}'
-               from components.java
-            }
+    install {
+        repositories.mavenInstaller {
+            pom.artifactId = '{{artifactId}}'
         }
     }
 
@@ -103,16 +100,16 @@ if(hasProperty('target') && target == 'android') {
 }
 
 dependencies {
-    implementation 'io.swagger:swagger-annotations:1.6.9'
-    implementation 'com.squareup.okhttp:okhttp:4.10.0'
-    implementation 'com.squareup.okhttp:logging-interceptor:4.10.0'
-    implementation 'com.google.code.gson:gson:2.10.1'
-    implementation 'io.gsonfire:gson-fire:1.8.5'
+    compile 'io.swagger:swagger-annotations:1.6.9'
+    compile 'com.squareup.okhttp:okhttp:4.10.0'
+    compile 'com.squareup.okhttp:logging-interceptor:4.10.0'
+    compile 'com.google.code.gson:gson:2.10.1'
+    compile 'io.gsonfire:gson-fire:1.8.5'
     {{#joda}}
-    implementation 'joda-time:joda-time:2.12.1'
+    compile 'joda-time:joda-time:2.12.1'
     {{/joda}}
     {{#threetenbp}}
-    implementation 'org.threeten:threetenbp:1.6.5'
+    compile 'org.threeten:threetenbp:1.6.5'
     {{/threetenbp}}
-    testImplementation 'junit:junit:4.13.2'
+    testCompile 'junit:junit:4.13.2'
 }

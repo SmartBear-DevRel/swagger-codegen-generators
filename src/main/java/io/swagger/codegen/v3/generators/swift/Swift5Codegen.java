@@ -254,7 +254,7 @@ public class Swift5Codegen extends DefaultCodegenConfig {
         if (StringUtils.isBlank(templateDir)) {
             embeddedTemplateDir = templateDir = getTemplateDir();
         }
-
+        
         // Setup project name
         if (additionalProperties.containsKey(PROJECT_NAME)) {
             setProjectName((String) additionalProperties.get(PROJECT_NAME));
@@ -348,6 +348,9 @@ public class Swift5Codegen extends DefaultCodegenConfig {
         supportingFiles.add(new SupportingFile("gitignore.mustache",
             "",
             ".gitignore"));
+
+        copyFistAllOfProperties = true;
+
     }
 
     @Override
@@ -848,11 +851,6 @@ public class Swift5Codegen extends DefaultCodegenConfig {
             }
             codegenModel.vars = codegenProperties;
         }
-    }
-
-    @Override
-    protected boolean copyFirstAllOfProperties(Schema allOfSchema) {
-        return false;
     }
 }
 

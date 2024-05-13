@@ -6,7 +6,7 @@ version = '{{artifactVersion}}'
 
 buildscript {
     repositories {
-        mavenCentral()
+        jcenter()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:1.5.+'
@@ -15,7 +15,7 @@ buildscript {
 }
 
 repositories {
-    mavenCentral()
+    jcenter()
 }
 
 
@@ -82,7 +82,7 @@ if(hasProperty('target') && target == 'android') {
 } else {
 
     apply plugin: 'java'
-    apply plugin: 'maven-publish'
+    apply plugin: 'maven'
     {{#java8}}
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
@@ -92,12 +92,9 @@ if(hasProperty('target') && target == 'android') {
     targetCompatibility = JavaVersion.VERSION_1_7
     {{/java8}}
 
-    publishing {
-        publications {
-            maven(MavenPublication) {
-               artifactId = '{{artifactId}}'
-               from components.java
-            }
+    install {
+        repositories.mavenInstaller {
+            pom.artifactId = '{{artifactId}}'
         }
     }
 
@@ -128,28 +125,28 @@ ext {
 
 dependencies {
     {{#useOas2}}
-    implementation "io.swagger:swagger-annotations:$swagger_annotations_version"
+    compile "io.swagger:swagger-annotations:$swagger_annotations_version"
     {{/useOas2}}
     {{^useOas2}}
-    implementation "io.swagger.core.v3:swagger-annotations:$swagger_annotations_version"
+    compile "io.swagger.core.v3:swagger-annotations:$swagger_annotations_version"
     {{/useOas2}}
-    implementation "org.glassfish.jersey.core:jersey-client:$jersey_version"
-    implementation "org.glassfish.jersey.media:jersey-media-multipart:$jersey_version"
-    implementation "org.glassfish.jersey.media:jersey-media-json-jackson:$jersey_version"
-    implementation "com.fasterxml.jackson.core:jackson-core:$jackson_version"
-    implementation "com.fasterxml.jackson.core:jackson-annotations:$jackson_version"
-    implementation "com.fasterxml.jackson.core:jackson-databind:$jackson_version"
+    compile "org.glassfish.jersey.core:jersey-client:$jersey_version"
+    compile "org.glassfish.jersey.media:jersey-media-multipart:$jersey_version"
+    compile "org.glassfish.jersey.media:jersey-media-json-jackson:$jersey_version"
+    compile "com.fasterxml.jackson.core:jackson-core:$jackson_version"
+    compile "com.fasterxml.jackson.core:jackson-annotations:$jackson_version"
+    compile "com.fasterxml.jackson.core:jackson-databind:$jackson_version"
     {{#java8}}
-    implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jackson_version"
+    compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jackson_version"
     {{/java8}}
     {{^java8}}
-    implementation "com.fasterxml.jackson.datatype:jackson-datatype-joda:$jackson_version"
-    implementation "joda-time:joda-time:$jodatime_version"
-    implementation "com.brsanthu:migbase64:2.2"
+    compile "com.fasterxml.jackson.datatype:jackson-datatype-joda:$jackson_version"
+    compile "joda-time:joda-time:$jodatime_version"
+    compile "com.brsanthu:migbase64:2.2"
     {{/java8}}
     {{#supportJava6}}
-    implementation "commons-io:commons-io:$commons_io_version"
-    implementation "org.apache.commons:commons-lang3:$commons_lang3_version"
+    compile "commons-io:commons-io:$commons_io_version"
+    compile "org.apache.commons:commons-lang3:$commons_lang3_version"
     {{/supportJava6}}
-    testImplementation "junit:junit:$junit_version"
+    testCompile "junit:junit:$junit_version"
 }
